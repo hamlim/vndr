@@ -1,43 +1,25 @@
 {
   "name": "vndr",
   "version": "0.0.1",
-  "description": "TODO",
+  "description": "A barebones vendoring tool",
   "homepage": "TODO",
+  "license": "MIT",
   "author": {
-    "name": "TODO",
-    "email": "TODO"
+    "name": "Matt Hamlin",
+    "email": "matthewjameshamlin@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "TODO",
+    "url": "https://github.com/hamlim/vndr",
     "directory": "packages/vndr"
   },
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    }
+  "bin": {
+    "vndr": "./cli.mjs"
   },
-  "files": [
-    "dist",
-    "CHANGELOG.md",
-    "README.md"
-  ],
+  "files": ["CHANGELOG.md", "README.md", "cli.mjs"],
   "type": "module",
-  "devDependencies": {
-    "@swc/cli": "0.3.10",
-    "@swc/core": "1.4.2",
-    "hohoro": "0.3.0",
-    "@types/bun": "1.1.11",
-    "typescript": "5.4.5"
-  },
+  "devDependencies": {},
   "scripts": {
-    "dev": "node --watch-path=./src dev.mjs",
-    "build": "hohoro-experimental",
-    "type-check": "tsc -p ./tsconfig.json",
-    "lint": "biome lint ./src/",
-    "test": "bun test",
-    "prepub": "bun run build && bun run type-check && bun run lint && bun run test",
     "pub": "npm publish --access public"
   }
 }

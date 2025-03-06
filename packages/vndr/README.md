@@ -1,39 +1,97 @@
-# `vndr`
+# vndr
 
-TODO
+A lightweight CLI tool for downloading packages, repositories, and files from various sources. `vndr` makes it easy to vendor dependencies by downloading them into a local directory.
 
-## Getting Started:
+## Features
+
+- 📦 Download npm packages
+- 🐙 Download GitHub repositories
+- 📁 Download specific directories from GitHub
+- 📄 Download individual files from GitHub or any URL
+- 🎯 Customizable target directory
+- 🚀 Zero dependencies - uses only Node.js built-ins
+
+## Installation
 
 ```bash
-bun add vndr
+# Install globally with npm
+npm install -g vndr
+
+# Or use directly with npx
+npx vndr <package>
+
+# Or use with bunx
+bunx vndr <package>
 ```
 
-...
+## Usage
 
-## Contributing:
+```bash
+vndr <package...> [--dir <path>]
+```
 
-### Building:
+### Options
 
-This library uses [`swc`](https://swc.rs/) and [`TypeScript`](https://www.typescriptlang.org/docs/) to build the source code and generate types.
+- `--dir, -d`: Specify target directory (default: "./vndr")
 
-To build the library, run `bun run build` from the root, or from this workspace!
+### Examples
 
-### Code Quality:
+```bash
+# Download an npm package
+vndr express
 
-#### Type Checking:
+# Download multiple npm packages
+vndr express lodash moment
 
-This library uses TypeScript to perform type checks, run `bun run type-check` from the root or from this workspace!
+# Download a GitHub repository
+vndr vercel/next.js
 
-#### Linting
+# Download a specific directory from GitHub
+vndr https://github.com/vercel/next.js/tree/main/examples
 
-This library uses [BiomeJS](https://biomejs.dev/) for linting, run `bun run lint` from the root or from this workspace!
+# Download a specific file from GitHub
+vndr https://github.com/vercel/next.js/blob/main/package.json
 
-#### Tests
+# Download to a custom directory
+vndr express --dir vendor
 
-This library uses Bun for running unit tests, run `bun run test` from the root or from this workspace!
+# Download any file from a URL
+vndr https://example.com/file.js
+```
 
-### Publishing:
+## How it works
 
-To publish the library, run `bun run pub` from the workspace root. This will prompt you to login to npm and publish the package.
+`vndr` intelligently handles different types of inputs:
 
-> Note: In the future, we will automate this process using GitHub Actions. And also add in tooling to manage releases / changelogs!
+1. **npm packages**: 
+   - Creates a temporary directory
+   - Installs the package using npm
+   - Copies the package contents to your target directory
+   - Cleans up temporary files
+
+2. **GitHub repositories**:
+   - Performs a shallow clone (--depth 1)
+   - Copies files to your target directory
+   - Removes `.git` directory
+   - Supports both repository names (user/repo) and URLs
+
+3. **GitHub directories**:
+   - Clones the repository temporarily
+   - Extracts only the specified directory
+   - Maintains the original directory structure
+
+4. **Files**:
+   - Downloads directly using fetch
+   - Supports both GitHub file URLs and regular URLs
+   - Automatically converts GitHub blob URLs to raw URLs
+
+## Notes
+
+- All downloads are placed in the `./vndr` directory by default
+- Use `--dir` to specify a different target directory
+- GitHub repository downloads are shallow clones to minimize download size
+- npm package downloads include only the package contents, not its dependencies
+
+## License
+
+MIT
